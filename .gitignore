@@ -1,2 +1,10 @@
 .DS_Store
+
+# use `npm install` to get these
 node_modules/
+
+# user `bower install` to get these
+components/
+
+# hide sensitive config
+config/
