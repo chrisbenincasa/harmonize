@@ -24,7 +24,7 @@ app.configure(function() {
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(session({
-        secret: "some_random_secret",
+        secret: config.session_secret,
         resave: true,
         saveUninitialized: true
     }));
