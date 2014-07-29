@@ -13,6 +13,8 @@ var config = require('./config/config.json'),
 var app = express();
 
 app.configure(function() {
+    var lessMiddleware;
+
     app.set('port', process.env.PORT || 3000);
     app.set('views', __dirname + '/views');
     app.engine('jade', cons.jade);
@@ -28,6 +30,16 @@ app.configure(function() {
     }));
 
     app.use(app.router);
+
+    // set up LESS middleware
+    // LESS searched for at /public/less
+    // CSS served at /public/css
+    lessMiddleware = require('less-middleware');
+    app.use(lessMiddleware('/less', {
+        dest: '/css',
+        pathRoot: path.join(__dirname, 'public')
+    }));
+
     app.use(express.static(path.join(__dirname, 'public')));
 });
 

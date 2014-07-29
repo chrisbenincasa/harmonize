@@ -8,4 +8,7 @@ block content
         a.room-link(href='/room/#{room.id}', data-room-id='#{room.id}')= room.name
   else
     p Welcome to #{title}
-    p Please authorize with Rdio to start entering rooms
+    p 
+      | Please 
+      a(href="/oauth/login") authorize
+      |  with Rdio to start entering rooms
