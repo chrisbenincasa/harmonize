@@ -18,4 +18,5 @@ TODO:
   - [ ] Worth using Redis as Adapter?
 - [ ] Implement Rdio Web Playback API
   - [ ] Use Websockets for playback synchronization within rooms
+- [ ] Use Redis for more persistent user session store
 - [ ] Add tests 
