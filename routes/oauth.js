@@ -19,7 +19,6 @@ module.exports = function(app) {
                 }
             });
         } else {
-            console.log('already have a token');
             res.redirect('/');
         }
     });
@@ -29,10 +28,8 @@ module.exports = function(app) {
         oauth.getOAuthAccessToken(parsedUrl.oauth_token, req.session.oauth_secret, parsedUrl.oauth_verifier,
             function(err, oauth_access_token, oauth_access_secret, results) {
                 if (err) {
-                    console.log(err);
                     throw new Error(err);
                 } else {
-                    console.log(arguments)
                     req.session.oauth_access_token = oauth_access_token;
                     req.session.oauth_access_secret = oauth_access_secret;
                     res.redirect('/');

@@ -1,75 +1,74 @@
+(function() {
+    var config = require('./config/config.json'),
+        express = require('express'),
+        http = require('http'),
+        path = require('path'),
+        io = require('socket.io'),
+        OAuth = require('oauth'),
+        cons = require('consolidate'),
+        bodyParser = require('body-parser');
 
-var config = require('./config/config.json'),
-    express = require('express'),
-    routes = require('./routes'),
-    room = require('./routes/room'),
-    http = require('http'),
-    path = require('path'),
-    io = require('socket.io'),
-    session = require('express-session'),
-    OAuth = require('oauth'),
-    cons = require('consolidate');
-
-var app = express();
-
-app.configure(function() {
-    var lessMiddleware;
+    var env = process.env.NODE_ENV || 'development',
+        app = express(),
+        server,
+        ioServer;
 
     app.set('port', process.env.PORT || 3000);
     app.set('views', __dirname + '/views');
     app.engine('jade', cons.jade);
     app.set('view engine', 'jade');
-    app.use(express.favicon());
-    app.use(express.logger('dev'));
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-    app.use(session({
+    // app.use(require('serve-favicon')());
+    app.use(require('morgan')('dev'));
+    app.use(bodyParser.urlencoded({ extended: false }));
+    // parse application/json
+    app.use(bodyParser.json());
+    app.use(require('method-override')());
+    app.use(require('cookie-parser')(config.session_secret));
+    app.use(require('express-session')({
         secret: config.session_secret,
         resave: true,
         saveUninitialized: true
     }));
 
-    app.use(app.router);
+    // attach all routes
+    require('./routes')(app);
 
     // set up LESS middleware
     // LESS searched for at /public/less
     // CSS served at /public/css
-    lessMiddleware = require('less-middleware');
-    app.use(lessMiddleware('/less', {
+    app.use(require('less-middleware')('/less', {
         dest: '/css',
         pathRoot: path.join(__dirname, 'public')
     }));
 
     app.use(express.static(path.join(__dirname, 'public')));
-});
 
-app.configure('development', function(){
-    app.use(express.errorHandler());
-});
+    if (env === 'development') {
+        app.use(require('errorhandler'));
+    }
 
-app.set('oauth', new OAuth.OAuth(
-    'http://api.rdio.com/oauth/request_token',
-    'http://api.rdio.com/oauth/access_token',
-    config.client_token,
-    config.client_secret,
-    '1.0',
-    null,
-    'HMAC-SHA1'));
+    app.set('oauth', new OAuth.OAuth(
+        'http://api.rdio.com/oauth/request_token',
+        'http://api.rdio.com/oauth/access_token',
+        config.client_token,
+        config.client_secret,
+        '1.0',
+        null,
+        'HMAC-SHA1'));
 
-var server = app.listen(app.get('port'));
+    server = app.listen(app.get('port'));
 
-require('./routes')(app);
+    ioServer = io(server);
 
-var ioServer = io(server);
-
-ioServer.on('connection', function(socket) {
-    socket.on('join room', function(data) {
-        socket.join(data.room, function(err, data) {
-            if (err) {
-                console.log(err);
-            }
-            console.log(socket.rooms);
+    ioServer.on('connection', function(socket) {
+        socket.on('join room', function(data) {
+            socket.join(data.room, function(err, data) {
+                if (err) {
+                    throw new Error(err);
+                }
+                console.log(socket.rooms);
+            });
+            console.log('socket joined room ' + data.room);
         });
-        console.log('socket joined room ' + data.room);
     });
-});
+})();
