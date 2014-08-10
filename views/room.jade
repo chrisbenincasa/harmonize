@@ -1,4 +1,37 @@
 extends layout
 
+block js_imports
+    script(src='/components/swfobject/swfobject/swfobject.js')
+    script(src='/js/room.js')
+
 block content
-  h1= title
+    style
+        #upsell div {
+            display: none
+        }
+    h1= title
+    div#upsell
+        div#remainingTime
+    div#apiswf
+    input#play_key(value="a239851")
+    div#playControls
+        button#play Play
+        button#pause Pause
+        button#stop Stop
+        button#previous Previous
+        button#id Next
+    div.artistAlbumInfo
+        h3
+            span#artist
+             -
+            span#track
+        img#art.albumArt(src="")
+        h3#album
+        h4
+            | Playstate
+            p#playState
+        h4
+            | Position
+            p#position
+    script
+        Harmonize.setPlaybackToken("#{playbackToken}")
