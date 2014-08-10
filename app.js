@@ -1,5 +1,6 @@
 (function() {
     var config = require('./config/config.json'),
+        constants = require('./utils/constants.json'),
         express = require('express'),
         http = require('http'),
         path = require('path'),
@@ -31,8 +32,8 @@
     }));
 
     app.set('oauth', new OAuth.OAuth(
-        'http://api.rdio.com/oauth/request_token',
-        'http://api.rdio.com/oauth/access_token',
+        constants.rdioRequestTokenUrl,
+        constants.rdioAccessTokenUrl,
         config.client_token,
         config.client_secret,
         '1.0',

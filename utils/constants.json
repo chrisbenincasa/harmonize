@@ -1,5 +1,7 @@
 {
     "title": "Harmonize",
     "rdioApiPath": "http://api.rdio.com/1/",
+    "rdioRequestTokenUrl": "http://api.rdio.com/oauth/request_token",
+    "rdioAccessTokenUrl": "http://api.rdio.com/oauth/access_token",
     "oauthCallbackPath": "/oauth/callback"
 }
