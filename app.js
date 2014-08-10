@@ -17,10 +17,10 @@
     app.set('views', __dirname + '/views');
     app.engine('jade', cons.jade);
     app.set('view engine', 'jade');
+    // TODO uncomment below when a favicon exists
     // app.use(require('serve-favicon')());
     app.use(require('morgan')('dev'));
     app.use(bodyParser.urlencoded({ extended: false }));
-    // parse application/json
     app.use(bodyParser.json());
     app.use(require('method-override')());
     app.use(require('cookie-parser')(config.session_secret));
@@ -29,6 +29,16 @@
         resave: true,
         saveUninitialized: true
     }));
+
+    app.set('oauth', new OAuth.OAuth(
+        'http://api.rdio.com/oauth/request_token',
+        'http://api.rdio.com/oauth/access_token',
+        config.client_token,
+        config.client_secret,
+        '1.0',
+        null,
+        'HMAC-SHA1')
+    );
 
     // attach all routes
     require('./routes')(app);
@@ -47,17 +57,10 @@
         app.use(require('errorhandler'));
     }
 
-    app.set('oauth', new OAuth.OAuth(
-        'http://api.rdio.com/oauth/request_token',
-        'http://api.rdio.com/oauth/access_token',
-        config.client_token,
-        config.client_secret,
-        '1.0',
-        null,
-        'HMAC-SHA1'));
-
+    // Initialize app server
     server = app.listen(app.get('port'));
 
+    // Initialize WebSocket server
     ioServer = io(server);
 
     ioServer.on('connection', function(socket) {

@@ -3,7 +3,7 @@ module.exports = function(app) {
             oauth_callback: 'http://local.chrisbenincasa.com:3000/oauth/callback'
         },
         url = require('url'),
-        oauth = app.get('oauth');
+        oauth = app.set('oauth');
 
     app.get('/oauth/login', function(req, res) {
         if (!req.session.oauth_access_token) {
@@ -30,6 +30,7 @@ module.exports = function(app) {
                 if (err) {
                     throw new Error(err);
                 } else {
+                    console.log('got tokens: ' + oauth_access_token + ' ' + oauth_access_secret);
                     req.session.oauth_access_token = oauth_access_token;
                     req.session.oauth_access_secret = oauth_access_secret;
                     res.redirect('/');

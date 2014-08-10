@@ -8,21 +8,24 @@ module.exports = function(app) {
         config = require('../config/config.json');
 
     app.get('/', function(req, res) {
-        console.log(app.get('cookie'))
-        console.log(req.cookies, req.signedCookies)
-        if (req.session && req.session.oauth_access_token && req.session.oauth_access_secret) {
-            res.cookie('oauth_crap', JSON.stringify({
+        // TODO obviously don't save oauth information in a cookie...
+        // This is for development ease and should be chucked when a more
+        // persistant session store is used.
+        if (!req.signedCookies.oauth_crap && req.session &&
+            req.session.oauth_access_token && req.session.oauth_access_secret) {
+            var p = res.cookie('oauth_crap', {
                 token: req.session.oauth_access_token,
                 secret: req.session.oauth_access_secret
-            }), {
-                secure: true,
-                signed: true,
-                expires: new Date(Date.now() + 9000000)
+            }, {
+                signed: true
             });
         }
 
-        var x = cookieParser.signedCookies(req.cookies, config.session_secret);
-        console.log(x)
+        if (req.signedCookies.oauth_crap) {
+            var oauth_crap = req.signedCookies.oauth_crap;
+            req.session.oauth_access_token = oauth_crap.token;
+            req.session.oauth_access_secret = oauth_crap.secret;
+        }
 
         res.render('index', {
             title: 'Express',
