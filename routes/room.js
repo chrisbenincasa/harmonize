@@ -1,5 +1,6 @@
 module.exports = function(app) {
-    var oauth = app.set('oauth');
+    var oauth = app.set('oauth'),
+        constants = require('../utils/constants.json');
 
     app.get('/room/:roomId', function(req, res) {
         // TODO use "next" and a filter to pipe request through oauth stuff
@@ -12,7 +13,7 @@ module.exports = function(app) {
 
         if (!req.session.playback_token) {
             oauth.post(
-                'http://api.rdio.com/1/',
+                constants.rdioApiPath,
                 req.session.oauth_access_token,
                 req.session.oauth_access_secret,
                 {

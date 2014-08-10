@@ -1,6 +1,9 @@
 module.exports = function(app) {
     var cookieParser = require('cookie-parser'),
-        config = require('../config/config.json');
+        fs = require('fs'),
+        path = require('path'),
+        config = require('../config/config.json'),
+        constants = require('../utils/constants.json');
 
     app.all('/*', function(req, res, next) {
         // TODO obviously don't save oauth information in a cookie...
@@ -30,7 +33,7 @@ module.exports = function(app) {
      */
     app.get('/', function(req, res) {
         res.render('index', {
-            title: 'Express',
+            title: constants.title,
             authorized: req.session.oauth_access_token,
             rooms: [
                 {
@@ -44,6 +47,10 @@ module.exports = function(app) {
         });
     });
 
-    require('./oauth')(app);
-    require('./room')(app);
+    // Require all other route files in this directory
+    fs.readdirSync(path.join(__dirname, '.')).forEach(function(file) {
+        if (file.indexOf('index') === -1) {
+            require(path.join(__dirname, file))(app);
+        }
+    });
 };

@@ -1,15 +1,15 @@
 module.exports = function(app) {
-    var constants = {
-            oauth_callback: 'http://local.chrisbenincasa.com:3000/oauth/callback'
-        },
+    var constants = require('../utils/constants.json'),
+        oauth = app.set('oauth'),
         url = require('url'),
-        oauth = app.set('oauth');
+        path = require('path');
 
     app.get('/oauth/login', function(req, res) {
+        var callbackUrl = path.join(req.protocol, req.hostname, constants.oauthCallbackPath);
         if (!req.session.oauth_access_token) {
             oauth.getOAuthRequestToken({
-                oauth_callback: constants.oauth_callback
-            }, function(err, oauth_token, oauth_secret, results) {
+                oauth_callback: callbackUrl
+            }, function(err, oauth_token, oauth_secret) {
                 if (err) {
                     throw new Error(err);
                 } else {
@@ -26,11 +26,10 @@ module.exports = function(app) {
     app.get('/oauth/callback', function(req, res) {
         var parsedUrl = url.parse(req.url, true).query;
         oauth.getOAuthAccessToken(parsedUrl.oauth_token, req.session.oauth_secret, parsedUrl.oauth_verifier,
-            function(err, oauth_access_token, oauth_access_secret, results) {
+            function(err, oauth_access_token, oauth_access_secret) {
                 if (err) {
                     throw new Error(err);
                 } else {
-                    console.log('got tokens: ' + oauth_access_token + ' ' + oauth_access_secret);
                     req.session.oauth_access_token = oauth_access_token;
                     req.session.oauth_access_secret = oauth_access_secret;
                     res.redirect('/');

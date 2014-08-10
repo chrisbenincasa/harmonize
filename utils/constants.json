@@ -1,0 +1,5 @@
+{
+    "title": "Harmonize",
+    "rdioApiPath": "http://api.rdio.com/1/",
+    "oauthCallbackPath": "/oauth/callback"
+}
