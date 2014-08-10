@@ -59,6 +59,9 @@
         app.locals.pretty = true;
     }
 
+    // Include environment as a local so it is accessible in views
+    app.locals.env = env;
+
     // Initialize app server
     server = app.listen(app.get('port'));
 
