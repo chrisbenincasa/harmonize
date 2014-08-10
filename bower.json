@@ -10,7 +10,7 @@
     "jquery": "2.1.1",
     "socket.io-client": "1.0.6",
     "jquery.rdio": "0.1.1",
-    "swfobject": "2.3.0",
+    "swfobject": "*",
     "angular": "1.2.22-build.373+sha.2e22588"
   }
 }
