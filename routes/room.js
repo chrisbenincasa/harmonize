@@ -1,14 +1,5 @@
 module.exports = function(app) {
-    var rdio = require('rdio')({});
     var oauth = app.set('oauth');
-
-    app.all('/room/*', function(req, res, next) {
-        if (!req.session || !req.session.oauth_access_token) {
-            res.redirect('/');
-        } else {
-            next();
-        }
-    });
 
     app.get('/room/:roomId', function(req, res) {
         // TODO use "next" and a filter to pipe request through oauth stuff
