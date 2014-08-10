@@ -30,6 +30,7 @@
     };
 
     Harmonize.freeRemainingChanged = function(remaining) {
+        console.log('remaining time changed to ' + remaining);
         $('#remainingTime').text(remaining);
     };
 
@@ -44,6 +45,14 @@
             $('#artist').text(playingTrack['artist']);
             $('#art').attr('src', playingTrack['icon']);
         }
+    };
+
+    Harmonize.positionChanged = function(position) {
+        // TODO communicate with websocket that position changed
+        console.log('emitting... ' + Harmonize.socket);
+        Harmonize.socket.emit('time_updated', {
+            position: position
+        });
     };
 
     $(document).ready(function() {

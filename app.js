@@ -55,6 +55,7 @@
 
     if (env === 'development') {
         app.use(require('errorhandler'));
+        app.locals.pretty = true;
     }
 
     // Initialize app server
@@ -64,7 +65,9 @@
     ioServer = io(server);
 
     ioServer.on('connection', function(socket) {
-        socket.on('join room', function(data) {
+        console.log(socket.id + ' connected');
+        socket.on('join_room', function(data) {
+            console.log(socket.id + ' joined room');
             socket.join(data.room, function(err, data) {
                 if (err) {
                     throw new Error(err);
@@ -72,6 +75,10 @@
                 console.log(socket.rooms);
             });
             console.log('socket joined room ' + data.room);
+        });
+
+        socket.on('time_updated', function(data) {
+            console.log(socket.id + ' position: ' + data.position);
         });
     });
 })();
