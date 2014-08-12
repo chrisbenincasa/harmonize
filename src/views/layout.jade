@@ -1,13 +1,17 @@
+include angular-includes
+
 doctype 5
-html
-  head
-    title= title
-    if env === 'development'
-        link(rel='stylesheet', href='/css/style.css')
-        script(src="/components/jquery/dist/jquery.min.js")
-        script(src="/components/socket.io-client/socket.io.js")
-        script(src="/components/jquery.rdio/jquery.rdio.min.js")
-        script(src="/js/main.js")
-        block js_imports
+html(ng-app='harmonize')
+    head
+        title= title
+        if env === 'development'
+            link(rel='stylesheet', href='/css/style.css')
+            script(src="/components/jquery/dist/jquery.min.js")
+            script(src="/components/socket.io-client/socket.io.js")
+            script(src="/components/jquery.rdio/jquery.rdio.min.js")
+            script(src='/components/swfobject/swfobject/swfobject.js')
+            +angular_includes
+            block js_imports
   body
-    block content
+    div(ng-controller='harmonize.MainController')
+        block content

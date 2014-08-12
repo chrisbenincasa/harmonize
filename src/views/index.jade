@@ -1,14 +1,15 @@
 extends layout
 
 block content
-  h1= title
-  if authorized
-    h2 Welcome! Here are some rooms
-    each room in rooms
-        a.room-link(href='/room/#{room.id}', data-room-id='#{room.id}')= room.name
-  else
-    p Welcome to #{title}
-    p 
-      | Please 
-      a(href="/oauth/login") authorize
-      |  with Rdio to start entering rooms
+    div(ui-view)
+        h1= title
+        if authorized
+            h2 Welcome! Here are some rooms
+            each room in rooms
+                a.room-link(ui-sref='room', href='/rooms/#{room.id}')= room.name
+        else
+            p Welcome to #{title}
+            p
+                | Please
+                a(href="/oauth/login") authorize
+                |  with Rdio to start entering rooms

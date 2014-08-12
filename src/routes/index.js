@@ -48,9 +48,11 @@ module.exports = function(app) {
     });
 
     // Require all other route files in this directory
-    fs.readdirSync(path.join(__dirname, '.')).forEach(function(file) {
-        if (file.indexOf('index') === -1) {
-            require(path.join(__dirname, file))(app);
-        }
-    });
+    // fs.readdirSync(path.join(__dirname, '.')).forEach(function(file) {
+    //     if (file.indexOf('index') === -1) {
+    //         require(path.join(__dirname, file))(app);
+    //     }
+    // });
+    require('./oauth')(app);
+    require('./partials')(app);
 };

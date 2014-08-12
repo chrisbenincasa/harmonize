@@ -5,11 +5,11 @@ module.exports = function(app) {
         path = require('path');
 
     app.get('/oauth/login', function(req, res) {
-        var callbackUrl = path.join(req.protocol, req.hostname, constants.oauthCallbackPath);
+        var callbackUrl = req.protocol + '://' + path.join(req.hostname + ':' + app.set('port'), constants.oauthCallbackPath);
         if (!req.session.oauth_access_token) {
             oauth.getOAuthRequestToken({
                 oauth_callback: callbackUrl
-            }, function(err, oauth_token, oauth_secret) {
+            }, function(err, oauth_token, oauth_secret, results) {
                 if (err) {
                     throw new Error(err);
                 } else {

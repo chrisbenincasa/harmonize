@@ -54,6 +54,11 @@
 
     app.use(express.static(path.join(__dirname, 'public')));
 
+    // Handle 404s
+    app.use(function(req, res, next){
+        res.send(404, 'Sorry cant find that!');
+    });
+
     if (env === 'development') {
         app.use(require('errorhandler'));
         app.locals.pretty = true;
