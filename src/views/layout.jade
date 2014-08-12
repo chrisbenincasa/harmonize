@@ -6,10 +6,7 @@ html(ng-app='harmonize')
         title= title
         if env === 'development'
             link(rel='stylesheet', href='/css/style.css')
-            script(src="/components/jquery/dist/jquery.min.js")
-            script(src="/components/socket.io-client/socket.io.js")
-            script(src="/components/jquery.rdio/jquery.rdio.min.js")
-            script(src='/components/swfobject/swfobject/swfobject.js')
+            +js_includes
             +angular_includes
             block js_imports
   body
