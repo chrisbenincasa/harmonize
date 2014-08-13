@@ -6,7 +6,7 @@ block content
         if authorized
             h2 Welcome! Here are some rooms
             each room in rooms
-                a.room-link(ui-sref='room', href='/rooms/#{room.id}')= room.name
+                a.room-link(href='/room/#{room.id}')= room.name
         else
             p Welcome to #{title}
             p

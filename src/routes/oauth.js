@@ -5,6 +5,7 @@ module.exports = function(app) {
         path = require('path');
 
     app.get('/oauth/login', function(req, res) {
+        console.log('hit server')
         var callbackUrl = req.protocol + '://' + path.join(req.hostname + ':' + app.set('port'), constants.oauthCallbackPath);
         if (!req.session.oauth_access_token) {
             oauth.getOAuthRequestToken({

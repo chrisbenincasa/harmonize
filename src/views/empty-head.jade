@@ -4,13 +4,11 @@ include angular-includes
 doctype 5
 html(ng-app='harmonize')
     head
-        base(href='/')
         title= title
         if env === 'development'
             link(rel='stylesheet', href='/css/style.css')
             +js_includes
             +angular_includes
-            block js_imports
   body
     div(ng-controller='harmonize.MainController')
-        block content
+        div(ui-view)

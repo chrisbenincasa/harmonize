@@ -28,9 +28,6 @@ module.exports = function(app) {
         next();
     });
 
-    /*
-     * GET home page.
-     */
     app.get('/', function(req, res) {
         res.render('index', {
             title: constants.title,
@@ -47,12 +44,11 @@ module.exports = function(app) {
         });
     });
 
-    // Require all other route files in this directory
-    // fs.readdirSync(path.join(__dirname, '.')).forEach(function(file) {
-    //     if (file.indexOf('index') === -1) {
-    //         require(path.join(__dirname, file))(app);
-    //     }
-    // });
-    require('./oauth')(app);
     require('./partials')(app);
+    require('./oauth')(app);
+    require('./room')(app);
+    // Uncomment for deep-linking but redirect loops...
+    // app.all('/*', function(req, res) {
+    //     res.render('empty-head');
+    // });
 };

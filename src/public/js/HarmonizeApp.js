@@ -15,7 +15,7 @@
                     url: '/'
                 }).
                 state('room', {
-                    url: '/room',
+                    url: '/room/:roomId',
                     templateUrl: '/partials/room.html',
                     controller: 'harmonize.RoomController'
                 });

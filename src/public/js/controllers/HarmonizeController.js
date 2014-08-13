@@ -18,6 +18,7 @@
     }]);
 
     harmonize.controller('harmonize.RoomController', ['$scope', function($scope) {
+        console.log('room controller')
         var playbackToken = '1234';
         var flashVars = {
             playbackToken: playbackToken,

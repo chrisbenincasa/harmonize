@@ -41,8 +41,10 @@
         'HMAC-SHA1')
     );
 
-    // attach all routes
-    require('./routes')(app);
+    // Start attaching routes.
+    // The order here is VERY important
+    // Attach paths to static assets first so they have precendence
+    // Then attach routes with more general routes ("/*") coming last
 
     // set up LESS middleware
     // LESS searched for at /public/less
@@ -54,10 +56,15 @@
 
     app.use(express.static(path.join(__dirname, 'public')));
 
+    // attach all routes
+    require('./routes')(app);
+
     // Handle 404s
-    app.use(function(req, res, next){
+    app.use(function(req, res, next) {
         res.send(404, 'Sorry cant find that!');
     });
+
+    // End attaching routes
 
     if (env === 'development') {
         app.use(require('errorhandler'));
