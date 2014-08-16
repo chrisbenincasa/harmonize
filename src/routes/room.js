@@ -6,8 +6,10 @@ module.exports = function(app) {
         // TODO use "next" and a filter to pipe request through oauth stuff
         var roomResultFunc = function() {
             res.render('room', {
-                title: req.params.roomId,
-                playbackToken: req.session.playback_token
+                data: {
+                    room: req.params.roomId,
+                    playbackToken: req.session.playback_token
+                }
             });
         };
 
