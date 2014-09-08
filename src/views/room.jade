@@ -1,19 +1,19 @@
 extends layout
 
-- if (data)
-    block preloaded_data
-        script(type='json/preloaded', preload-resource)!= JSON.stringify(data)
-
 block content
     div(ng-controller='harmonize.RoomController')
+        - if (data)
+            block preloaded_data
+                script(type='json/preloaded', preload-resource)!= JSON.stringify(data)
+
         h1= title
         div#upsell
             div#remainingTime
         div#apiswf
-        input#play_key(value="a239851")
+        input#play_key(ng-value='room.playKey', ng-model='room.playKey')
         div#playControls
-            button#play Play
-            button#pause Pause
+            button#play(ng-click='onPlay()', ng-disabled='room.rdioElem === null') Play
+            button#pause(ng-click='onPause()', ng-disabled='room.rdioElem === null') Pause
             button#stop Stop
             button#previous Previous
             button#id Next

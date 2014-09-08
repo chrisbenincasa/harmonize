@@ -8,8 +8,8 @@
     harmonize.config(['$locationProvider', '$stateProvider', '$urlRouterProvider',
         function($locationProvider, $stateProvider, $urlRouterProvider) {
             // $locationProvider.html5Mode(true);
-
-            // All routes that shouldn't reload the page should be registered here
+            //
+            // // All routes that shouldn't reload the page should be registered here
             // $stateProvider.
             //     state('index', {
             //         url: '/'
@@ -19,11 +19,11 @@
             //         templateUrl: '/partials/room.html',
             //         controller: 'harmonize.RoomController'
             //     });
-            //
-            // // Anything that needs to actually go off page get caught here
-            // $urlRouterProvider.otherwise(function($injector, $location) {
-            //     window.location = $location.absUrl();
-            // });
+
+            // Anything that needs to actually go off page get caught here
+            $urlRouterProvider.otherwise(function($injector, $location) {
+                window.location = $location.absUrl();
+            });
         }
     ]);
 })();
